@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráficos</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">index</a>
+            <a class="navbar-brand" href="mapa.html">Mapa</a>
+
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Funções
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="grafico.html">Gráfico</a></li>
+                        <li><a class="dropdown-item" href="tabela.html">Tabela</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container my-4">
+
+        <div class="mb-5">
+            <h2>Gráfico de barras - Média dos alunos</h2>
+            <div style="position: relative; height: 400px;">
+                <canvas id="meuGrafico"></canvas>
+            </div>
+        </div>
+
+        <div class="mb-5">
+            <h2>Gráfico de linhas - Notas por bimestre</h2>
+            <div style="position: relative; height: 400px;">
+                <canvas id="meuGrafico-linha"></canvas>
+            </div>
+        </div>
+
+        <div class="mb-5">
+            <h2>Gráfico de pizza - Situação dos alunos</h2>
+            <div style="position: relative; height: 400px;">
+                <canvas id="meuGrafico-pizza"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Gráfico de barras -->
+    <script>
+        const nomes = [
+            'Bruno', 'Mariana', 'Eduardo', 'Fernanda',
+            'Ricardo', 'Camila', 'André', 'Beatriz',
+            'Leonardo', 'Patrícia', 'Gustavo', 'Isabela',
+            'Henrique', 'Letícia', 'Matheus', 'Daniela',
+            'Felipe', 'Vitória', 'Samuel', 'Nicole'
+        ];
+
+        const medias = [
+            7.625, 5.625, 8.25, 6.25,
+            4.625, 9.25, 6.75, 5.125,
+            7.75, 8.75, 6.75, 9.25,
+            4.75, 8.0, 6.25, 4.125,
+            8.125, 5.25, 7.125, 8.75
+        ];
+
+        const cores = medias.map(media =>
+            media >= 6 ? 'green' : 'red'
+        );
+
+        const grf = document.getElementById('meuGrafico');
+
+        new Chart(grf, {
+            type: 'bar',
+            data: {
+                labels: nomes,
+                datasets: [{
+                    label: 'Média dos alunos',
+                    data: medias,
+                    borderWidth: 1,
+                    backgroundColor: cores
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        title: {
+                            display: true,
+                            text: 'Média'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <!-- Gráfico de linhas -->
+    <script>
+        const grf1 = document.getElementById('meuGrafico-linha');
+
+        new Chart(grf1, {
+            type: 'line',
+            data: {
+                labels: [
+                    '1º Bimestre',
+                    '2º Bimestre',
+                    '3º Bimestre',
+                    '4º Bimestre'
+                ],
+                datasets: [
+                    {
+                        label: 'Bruno',
+                        data: [7.0, 6.5, 8.0, 9.0],
+                        borderColor: 'red',
+                        backgroundColor: 'red',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Mariana',
+                        data: [5.0, 6.0, 4.5, 7.0],
+                        borderColor: 'blue',
+                        backgroundColor: 'blue',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Eduardo',
+                        data: [8.0, 7.5, 9.0, 8.5],
+                        borderColor: 'orange',
+                        backgroundColor: 'orange',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Fernanda',
+                        data: [6.0, 5.5, 7.0, 6.5],
+                        borderColor: 'green',
+                        backgroundColor: 'green',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: 0,
+                        max: 10,
+                        title: {
+                            display: true,
+                            text: 'Nota'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <!-- Gráfico de pizza -->
+    <script>
+        const grf2 = document.getElementById('meuGrafico-pizza');
+
+        const aprovados = medias.filter(media => media >= 6).length;
+        const reprovados = medias.filter(media => media < 6).length;
+
+        new Chart(grf2, {
+            type: 'pie',
+            data: {
+                labels: ['Aprovados', 'Reprovados'],
+                datasets: [{
+                    label: 'Quantidade de alunos',
+                    data: [aprovados, reprovados],
+                    borderWidth: 1,
+                    backgroundColor: ['green', 'red']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+
+</body>
+</html>
